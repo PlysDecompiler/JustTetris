@@ -150,6 +150,19 @@ class Game(QWidget):
         self.howToOn = False
         self.deliveryGameOn = False
         self.gameOn = False
+        if hasattr(self.scene, 'field'):
+            self.scene.purge_silently(self.scene.field)
+        try:
+            deliveryItems = self.scene.get_list(DeliveryItem)
+            for deliveryItem in deliveryItems[::-1]:
+                self.scene.purge_silently(deliveryItem)
+            # self.toTranslate
+        except Exception as e:
+            print(e)
+        if hasattr(self.scene, 'tronTrain'):
+            self.scene.purge_silently(self.scene.tronTrain)
+        self.lastTrainHit = 0
+        self.currentlyHitting = None
 
     def trigger(self, action, delay=0, actor=None):  # maybe I need arguments as another argument
         self.actionQueue[self.scene.time+delay] = (action, actor)

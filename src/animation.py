@@ -100,6 +100,10 @@ class Director(object):
                                 self.scene.game.start_delivery_tron()
                 if Qt.Key_K == key:
                     self.scene.debugMode = not self.scene.debugMode
+                if Qt.Key_Escape == key:
+                    if not self.scene.game.timer.isActive():
+                        self.scene.game.timer.start()
+                    self.scene.game.init_menus()
         elif hasattr(self.scene.game, 'deliveryGameOn') and self.scene.game.deliveryGameOn:
             train = self.scene.tronTrain
             if Qt.Key_P == key:
@@ -114,6 +118,16 @@ class Director(object):
                 train.accelerate()
             if Qt.Key_Space == key:
                 train.jump()
+            if Qt.Key_Escape == key:
+                if not self.scene.game.timer.isActive():
+                    self.scene.game.timer.start()
+                self.scene.game.init_menus()
+
+        elif self.scene.game.howToOn:
+            if Qt.Key_Escape == key:
+                if not self.scene.game.timer.isActive():
+                    self.scene.game.timer.start()
+                self.scene.game.init_menus()
 
         if key in self.key_filter:
             self.is_down.add(key)
