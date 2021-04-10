@@ -116,7 +116,7 @@ class Game(QWidget):
 
         gameName = MenuItem("just tetris", QRect(-40, 60, 80, 15), game=self)
         # secret field: x: -20, -16 # y: 53, 62
-        gameName.set_clickable(QRect(-22, 52, 7, 10))
+        gameName.set_clickable(QRect(-22, 58, 7, 13))
         gameName.set_action(lambda menu: menu.game.start_secret_edit_cursor())
         self.scene.add(gameName, 'gameName')
 
@@ -128,7 +128,7 @@ class Game(QWidget):
         self.inactivityTimer = 0
 
         howToWidgetRect = QRect(-40, -20, 80, 15)
-        howToWidget = MenuItem("How To", howToWidgetRect, game=self)
+        howToWidget = MenuItem("How To (Spoilers!)", howToWidgetRect, game=self)
         howToWidget.set_clickable(howToWidgetRect)
         howToWidget.set_action(lambda menu: menu.game.trigger_how_to())
         self.scene.add(howToWidget)

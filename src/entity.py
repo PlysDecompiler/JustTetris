@@ -3,9 +3,8 @@
 
 import math
 import random
-# import numpy as np
-from PySide2.QtCore import QRect
 
+from PySide2.QtCore import QRect
 from PySide2.QtGui import QFont
 
 from src.opengl import *
