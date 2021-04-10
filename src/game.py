@@ -87,7 +87,7 @@ class Game(QWidget):
         self.secretEditText = None
         self.gameCheatText = ""
 
-        self.deliveryGameOn = None
+        self.deliveryGameOn = False
         self.deliveryTronNum = 1
         self.deliveryMode = 'swe'
         self.lastTrainHit = 0
@@ -107,25 +107,49 @@ class Game(QWidget):
 
     def init_menus(self):
 
-        gameName = MenuItem("just tetris", QRect(-40, 50, 80, 15), game=self)
+        try:
+            self.destroy_menus()
+        except Exception as e:
+            print(e)
+
+        self.turn_everything_off()
+
+        gameName = MenuItem("just tetris", QRect(-40, 60, 80, 15), game=self)
         # secret field: x: -20, -16 # y: 53, 62
         gameName.set_clickable(QRect(-22, 52, 7, 10))
         gameName.set_action(lambda menu: menu.game.start_secret_edit_cursor())
         self.scene.add(gameName, 'gameName')
 
-        startGameRect = QRect(-40, 0, 80, 15)
+        startGameRect = QRect(-40, 20, 80, 15)
         startGame = MenuItem("start game", startGameRect, game=self)
         startGame.set_clickable(startGameRect)
         startGame.set_action(lambda menu: menu.game.trigger_start_game())
         self.scene.add(startGame)
         self.inactivityTimer = 0
 
+        howToWidgetRect = QRect(-40, -20, 80, 15)
+        howToWidget = MenuItem("How To", howToWidgetRect, game=self)
+        howToWidget.set_clickable(howToWidgetRect)
+        howToWidget.set_action(lambda menu: menu.game.trigger_how_to())
+        self.scene.add(howToWidget)
+
         if hasattr(self, 'gamePoints'):
-            previousScore = MenuItem("previous score: " + str(self.gamePoints), QRect(-40, -50, 80, 15), game=self)
+            previousScore = MenuItem("previous score: " + str(self.gamePoints), QRect(-40, -60, 80, 15), game=self)
             self.scene.add(previousScore, 'previousScore')
 
     def trigger_start_game(self):
         self.trigger(self.start_game)
+
+    def trigger_how_to(self):
+        self.trigger(self.how_to)
+
+    def trigger_start_menu(self):
+        self.trigger(self.back_to_start_menu())
+
+    def turn_everything_off(self):
+        self.howToOn = False
+        self.deliveryGameOn = False
+        self.gameOn = False
 
     def trigger(self, action, delay=0, actor=None):  # maybe I need arguments as another argument
         self.actionQueue[self.scene.time+delay] = (action, actor)
@@ -150,6 +174,19 @@ class Game(QWidget):
         self.main_view.updateGL()
 
         # self.scene.time = 0
+
+    def how_to(self):
+        self.destroy_menus()
+        self.howToOn = True
+        self.main_view.updateGL()
+
+        # back to main menu button
+        backToMainRect = QRect(-80, -80, 80, 15)
+        backToMenu = MenuItem("Back to Main", backToMainRect, game=self)
+        # secret field: x: -20, -16 # y: 53, 62
+        backToMenu.set_clickable(backToMainRect)
+        backToMenu.set_action(lambda menu: menu.game.back_to_start_menu())
+        self.scene.add(backToMenu, 'gameName')
 
     def load_dictionary(self):
         # theDict = self.languageDict['swe']
@@ -279,8 +316,6 @@ class Game(QWidget):
                     if segment not in self.selfHitSegments:
                         tronTrain.lose_health(5)
                     self.selfHitSegments.append(segment)
-
-
 
     def back_to_start_menu(self):
         self.init_menus()

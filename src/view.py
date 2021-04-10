@@ -67,8 +67,8 @@ class MainPerspective(object):
         for menu in self.scene.iter_instances(MenuItem):
             menu.draw_main(viewport)
 
-        if not self.scene.game.deliveryGameOn and not self.scene.game.gameOn:
-            viewport.renderText(250. - self.scene.game.inactivityTimer % 600, -60., -1.,
+        if not self.scene.game.deliveryGameOn and not self.scene.game.gameOn and not self.scene.game.howToOn:
+            viewport.renderText(250. - self.scene.game.inactivityTimer % 600, -80., -1.,
                                 "Don't you think the title is a bit boring? You seem to have fallen asleep",
                                 self.scene.font)
 
@@ -93,8 +93,28 @@ class MainPerspective(object):
                                 helpText,
                                 self.scene.font)
 
-            #
-            # self.scene.game.
+        if self.scene.game.howToOn:
+            helptext = []
+            helptext.append("This is basically a tetris game.")
+            helptext.append("You can control the tetriminos with the arrow keys.")
+            helptext.append("Up: to turn the tetrimino, down to move it down")
+            # helptext.append("(space to crush down)")
+            helptext.append("Escape to go back to the main menu.")
+            helptext.append("")
+            helptext.append("To activate the easter egg, you have to ")
+            helptext.append("change the game title.")
+            helptext.append("This is done by clicking before the first")
+            helptext.append("letter and entering letters.")
+            helptext.append("You want the game to be called 'not just tetris'")
+            helptext.append("When you have the T-Tetrimino rotated so ")
+            helptext.append("it really looks like a T, press the Quality-Button")
+            helptext.append("Have fun!")
+
+            for i, text in enumerate(helptext):
+                viewport.renderText(-80., 80.-10*i, -1.,
+                                    text,
+                                    self.scene.font
+                                    )
 
         # glColor3ub(255,255,255)
         # viewport.renderText(20., -40., -1., str('\n'.join(str(s.pos)
