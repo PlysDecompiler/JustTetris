@@ -237,7 +237,6 @@ class TronTrain(Entity):
             print(e)
 
 
-
 class Stone(Entity):
     def __init__(self, trio, pos, kind):
         super(Stone, self).__init__()
@@ -596,14 +595,20 @@ class Field(Entity):
             fnt.setPointSizeF(SMALLFONTSIZE)
             glColor3ub(127, 127, greyTone)
             viewport.renderText(
-                float(right + 1 * size), float(bottom + (self.rows - 15) * size),
+                float(right + 1 * size), float(bottom + (self.rows - 14.4) * size),
                 -1., "Press p for pause.", fnt
             )
             glColor3ub(127, 127, greyTone)
             viewport.renderText(
-                float(right + 1 * size), float(bottom + (self.rows - 16) * size),
+                float(right + 1 * size), float(bottom + (self.rows - 15.0) * size),
                 -1., "Press q for quality. (only works with certain gamemodes and with certain tetriminos)", fnt
             )
+            glColor3ub(127, 127, greyTone)
+            viewport.renderText(
+                float(right + 1 * size), float(bottom + (self.rows - 15.6) * size),
+                -1., "Press k to toggle debug mode", fnt
+            )
+
             fnt.setPointSizeF(BIGFONTSIZE)
             gt = self.scene.game.newPointsTimer
             if self.scene.game.newPoints > 0 and self.scene.game.combo > 0:
@@ -660,13 +665,14 @@ class Field(Entity):
                         )
 
                         # JUST FOR DEBUGGING show the mainStone
-                        if stone.trio.mainStone == stone:
+                        if self.scene.debugMode and stone.trio.mainStone == stone:
                             glBegin(GL_LINES)
-                            glColor3ub(255,255,255)
+                            glColor3ub(255, 255, 255)
                             glVertex2d(left + ic * size + margin, bottom + ir * size + margin)
                             glVertex2d(left + (ic + 1) * size - margin, bottom + (ir + 1) * size - margin)
                             glEnd()
-                        if stone.trio.alive:
+                        # show the currently alive stone if debug mode is on
+                        if self.scene.debugMode and stone.trio.alive:
                             glPointSize(5)
                             glBegin(GL_POINTS)
                             glColor3ub(255, 0, 255)
@@ -674,8 +680,9 @@ class Field(Entity):
                             # glVertex2d(left + (ic + 1) * size - margin, bottom + (ir + 1) * size - margin)
                             glEnd()
                             glPointSize(1)
-
-                    # glColor3ub(200,200,200)
-                    # viewport.renderText(float(left + ic*size), float(bottom + ir*size), -1.,
-                    #                     "None" if stone is None else str(stone.kind), fnt)
+                    # content of every field
+                    if self.scene.debugMode:
+                        glColor3ub(150, 150, 150)
+                        viewport.renderText(float(left + ic*size), float(bottom + ir*size), -1.,
+                                            "None" if stone is None else str(stone.kind), fnt)
 

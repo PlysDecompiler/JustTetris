@@ -98,6 +98,8 @@ class Director(object):
                             ] is None:
                                 # print('block!!')
                                 self.scene.game.start_delivery_tron()
+                if Qt.Key_K == key:
+                    self.scene.debugMode = not self.scene.debugMode
         elif hasattr(self.scene.game, 'deliveryGameOn') and self.scene.game.deliveryGameOn:
             train = self.scene.tronTrain
             if Qt.Key_P == key:

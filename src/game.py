@@ -79,6 +79,7 @@ class Game(QWidget):
         self.gameOn = False
 
         self.scene.debuggingPoint = (0, 0)
+        self.scene.debugMode = False
         self.actionQueue = {}
         self.clickConnections = []
         self.inactivityTimer = 0

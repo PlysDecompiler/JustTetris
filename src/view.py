@@ -86,7 +86,7 @@ class MainPerspective(object):
                 item.draw_main(viewport)
 
             if game.deliveryMode == 'swe':
-                helpText = "Hit a word and then its translation!"
+                helpText = "Hit a word and then its swedish translation!"
             else:
                 helpText = "You activated DeliveryTron: Hit the circles in the correct order!"
             viewport.renderText(-80., 80., -1.,
