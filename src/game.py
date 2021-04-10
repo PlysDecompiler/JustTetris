@@ -87,6 +87,7 @@ class Game(QWidget):
         self.secretEditText = None
         self.gameCheatText = ""
 
+        self.howToOn = False
         self.deliveryGameOn = False
         self.deliveryTronNum = 1
         self.deliveryMode = 'swe'

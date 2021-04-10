@@ -92,6 +92,11 @@ class MainPerspective(object):
             viewport.renderText(-80., 80., -1.,
                                 helpText,
                                 self.scene.font)
+            if self.scene.tronTrain:
+                train = self.scene.tronTrain
+                viewport.renderText(-80., 90., -1.,
+                                    "Position: " + str([round(train.pos[0], 1), round(train.pos[1], 1)]),
+                                    self.scene.font)
 
         if self.scene.game.howToOn:
             helptext = []
