@@ -51,8 +51,7 @@ class Game(QWidget):
             self.viewwidth = 900
             self.viewheight = 900
 
-
-        self.setGeometry(1920, 30, int(self.viewwidth), int(self.viewheight))
+        self.setGeometry(10, 30, int(self.viewwidth), int(self.viewheight))
         IC.VIEW[0:2] = int(self.viewwidth), int(self.viewheight)
 
         self.setMouseTracking(True)
