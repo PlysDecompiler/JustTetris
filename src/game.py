@@ -154,8 +154,6 @@ class Game(QWidget):
     def load_dictionary(self):
         # theDict = self.languageDict['swe']
         with open('swedishTranslations.json', 'r', encoding='utf-8') as f:
-            # thingy = json.load(f)
-            # print(thingy)
             s = f.read()
             # jsEncoding = json.detect_encoding(f)
 

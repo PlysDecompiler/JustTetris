@@ -34,7 +34,7 @@ class Scene(object):
         If name is given the entity is added to the scene AND added to the
         dynamic_members which are accessible via attribute notation
         """
-        if hasattr(entity, "scene"):
+        if hasattr(entity, "scene") and entity.scene is not None:
             raise ValueError("This object already belongs to a scene!")
         else:
             if not isinstance(entity, Entity):

@@ -3,16 +3,14 @@
 
 import math
 import random
-import numpy as np
+# import numpy as np
 from PySide2.QtCore import QRect
 
 from PySide2.QtGui import QFont
 
 from src.opengl import *
-from src.constants import Colors, IC, RD
+from src.constants import Colors
 from src.world import Entity
-from src.vector import Vector2D
-import src.collision
 
 
 Tetriminos = [
@@ -77,6 +75,7 @@ class MenuItem(Entity):
         self.text = text
         self.area = area
         self.game = game
+        self.scene = None  # just initializing, assignment happens where entity is created
 
     def set_area(self, rect):
         self.area = rect
@@ -128,6 +127,7 @@ class DeliveryItem(Entity):
         super(DeliveryItem, self).__init__()
         self.radius = 5
         self.pos = pos
+        self.scene = None  # just initializing, assignment happens where entity is created
         self.content = content
         # instead of circles or ellipses I could try rhombus
 
@@ -163,6 +163,7 @@ class TronTrain(Entity):
     def __init__(self, pos):
         super(TronTrain, self).__init__()
 
+        self.scene = None  # just initializing, assignment happens where entity is created
         self.pos = pos
         self.direction = [0, 1]  # use an angle here for continuous direction
         self.angle = 90
@@ -400,6 +401,7 @@ class Field(Entity):
     def __init__(self):
         super(Field, self).__init__()
 
+        self.scene = None  # just initializing, assignment happens where entity is created
         self.cols = Config['cols']
         self.rows = Config['rows']
         self.currentTetri = None
