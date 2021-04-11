@@ -220,15 +220,15 @@ class TronTrain(Entity):
 
         glColor3ub(255,255,255)
         changeY = 3
-        Drawer.draw_line_rectangle(-80,-80 + changeY, -80 + 20, -80 + 2 + changeY)
+        Drawer.draw_line_rectangle(-80, -80 + changeY, -80 + 20, -80 + 2 + changeY)
         glColor3ub(int(255-255/100.*self.health), int(0+255/100.*self.health), 0)
-        Drawer.draw_filled_rectangle(-80,-80 + changeY, -80 + 20*self.health/100., -80 + 2 + changeY)
+        Drawer.draw_filled_rectangle(-80, -80 + changeY, -80 + 20*self.health/100., -80 + 2 + changeY)
 
         viewport.renderText(-80., -85., -1.,
                             f"Health: {self.health}/100",
                             self.scene.font)
         try:
-            if(self.scene.game.lastTrainHit):
+            if self.scene.game.lastTrainHit:
                 viewport.renderText(-80., -60., -1.,
                                 "Next Word: " + str(self.scene.game.lastTrainHit),
                                 self.scene.font)
@@ -295,35 +295,40 @@ class Tetrimino(Entity):
                 stone.pos = newPos
 
 
-    def fall(self, checkForCollision):
+    def fall(self, checkForCollision, crash=False):
         # maybe I don't have to check for collision in game.py because I can do it here?
         if checkForCollision:
             # if not self.field.scene.game.gameOn:
             #     print("shouldn't work")
             if self.alive and self.field.scene.game.gameOn:
-                for stone in self.stones:
-                    newPos = (stone.pos[0], stone.pos[1] - 1)
-                    if newPos[1] <= -1:
-                        self.die()
-                        return
+                restHeight = Config['rows']
+                fallRange = list(range(1, restHeight)) if crash else [1]
+                for fallDepth in fallRange:
+                    # the inner part worked for 1-fall already, but does this simple loop
+                    # allow for crashing down?
+                    for stone in self.stones:
+                        newPos = (stone.pos[0], stone.pos[1] - 1)
+                        if newPos[1] <= -1:
+                            self.die()
+                            return
 
-                    content = self.field.playArea[newPos]
-                    if type(content) == Stone and content not in self.stones:
-                        self.die()
-                        return
+                        content = self.field.playArea[newPos]
+                        if type(content) == Stone and content not in self.stones:
+                            self.die()
+                            return
 
-                for stone in sorted(self.stones, key=lambda st: st.pos[1]):  # sort by lowness
-                    newPos = (stone.pos[0], stone.pos[1]-1)
-                    self.field.playArea[newPos] = self.field.playArea[stone.pos]
-                    self.field.playArea[stone.pos] = None
-                    stone.pos = newPos
+                    for stone in sorted(self.stones, key=lambda st: st.pos[1]):  # sort by lowness
+                        newPos = (stone.pos[0], stone.pos[1]-1)
+                        self.field.playArea[newPos] = self.field.playArea[stone.pos]
+                        self.field.playArea[stone.pos] = None
+                        stone.pos = newPos
         else:
             print('I just died')
             self.die()
 
     # make tetrimino fall all the way down, also show a block shadow where it would land at any time, with a setting
     def crash_down(self):
-        pass
+        self.fall(True, True)
 
     def move_down(self):
         self.fall(True)
@@ -386,8 +391,6 @@ class Tetrimino(Entity):
             print("Game OVER")
             self.field.scene.game.gameOn = False
             self.field.scene.game.back_to_start_menu()
-
-
 
     def spawn_stone(self, pos):
         newStone = Stone(self, pos, self.kind)
@@ -458,6 +461,11 @@ class Field(Entity):
                     if type(stone) == Stone:
                         stone.pos = newPos
                         self.playArea[newPos] = stone
+
+    # drop the current
+    def drop_down(self):
+        self.currentTetri.crash_down()
+        # look at the move down function and move down as far as possible
 
     def swap_stash(self):
         if self.stash is not None:

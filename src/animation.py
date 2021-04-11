@@ -88,6 +88,8 @@ class Director(object):
                     field.rotate()
                 if Qt.Key_Shift == key:
                     field.swap_stash()
+                if Qt.Key_Space == key:
+                    field.drop_down()
                 if self.scene.game.gameName in ('not tetris', 'not just tetris'):
                     if Qt.Key_Q == key:
                         theTetri = self.scene.field.currentTetri
