@@ -102,9 +102,9 @@ class MainPerspective(object):
             helptext = []
             helptext.append("This is basically a tetris game.")
             helptext.append("You can control the tetriminos with the arrow keys.")
-            helptext.append("Up: to turn the tetrimino, down to move it down")
-            # helptext.append("(space to crush down)")
-            helptext.append("Escape to go back to the main menu.")
+            helptext.append("Up: to turn the tetrimino, Down: to move it down")
+            helptext.append("Space: to let tetrimino fall down")
+            helptext.append("Escape: to go back to the main menu.")
             helptext.append("")
             helptext.append("To activate the easter egg, you have to ")
             helptext.append("change the game title.")
